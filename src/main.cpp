@@ -94,13 +94,21 @@ void setup() {
   });
 
   server.on("/status", HTTP_GET, [] (AsyncWebServerRequest *request) {
-    uint8_t Element;
-    if (request->hasParam(PARAM_INPUT_1)) {
-      Element = request->getParam(PARAM_INPUT_1)->value().toInt();
-    } else {
-      Element = RELAY_PIN1;
-    }
-    request->send(200, "text/plain", String(digitalRead(Element)).c_str());
+    String Response;
+    Response += RTC.getTimeDate(false).c_str();
+    Response += ";";
+    Response += humidity(false).c_str();
+    Response += ";";
+    Response += temperature(false).c_str();
+    Response += ";";
+    Response += String(analogRead(POWER_PIN)*0.00712).c_str();
+    Response += ";";
+    Response += String(digitalRead(RELAY_PIN1)).c_str();
+    Response += ";";
+    Response += String(digitalRead(RELAY_PIN2)).c_str();
+    Response += ";";
+    Response += String(digitalRead(RELAY_PIN3)).c_str();
+    request->send(200, "text/plain", Response.c_str());
   });
 
   server.on("/state", HTTP_GET, [] (AsyncWebServerRequest *request) {
@@ -120,11 +128,11 @@ void setup() {
   });
 
   server.on("/temperature", HTTP_GET, [] (AsyncWebServerRequest *request) {
-    request->send(200, "text/plain", temperature().c_str());
+    request->send(200, "text/plain", temperature(true).c_str());
   });
 
   server.on("/humidity", HTTP_GET, [] (AsyncWebServerRequest *request) {
-    request->send(200, "text/plain", humidity().c_str());
+    request->send(200, "text/plain", humidity(true).c_str());
   });
 
   server.on("/RTCDateTime", HTTP_GET, [] (AsyncWebServerRequest *request) {

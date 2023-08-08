@@ -6,12 +6,20 @@
 
 DHT dht(DHTPIN, DHTTYPE);
 
-String temperature() {
+String temperature(bool mode) {
   float t = dht.readTemperature();
-  return (String(t)+"°C ");
+  if (mode) {
+    return (String(t));
+  } else {
+    return (String(t)+"°C");
+  }
 }
 
-String humidity() {
+String humidity(bool mode) {
   float h = dht.readHumidity();
-  return (String(h)+"%");
+  if (mode) {
+    return (String(h));
+  } else {
+    return (String(h)+"%");
+  }
 }

@@ -126,96 +126,21 @@ setInterval(function ( ) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("RTCDateTime").innerText = this.responseText;
+      var string = this.responseText;
+      var array = string.split(";");
+      document.getElementById("RTCDateTime").innerText = array[0];
+      document.getElementById("humidity").innerText = array[1];
+      document.getElementById("temperature").innerText = array[2];
+      document.getElementById("powbox").innerText = array[3]+"V";
+      document.getElementById("25").checked = ((array[4]=="0") ? true : false);
+      document.getElementById("26").checked = ((array[5]=="0") ? true : false);
+      document.getElementById("32").checked = ((array[6]=="0") ? true : false);
     }
   };
-  xhttp.open("GET", "/RTCDateTime", true);
+  xhttp.open("GET", "/status", true);
   xhttp.send();
-}, 1000 ) ;
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("powbox").innerText = this.responseText+"V";
-    }
-  };
-  xhttp.open("GET", "/power", true);
-  xhttp.send();
-}, 5000 ) ;
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("humidity").innerText = this.responseText;
-    }
-  };
-  xhttp.open("GET", "/humidity", true);
-  xhttp.send();
-}, 5000 ) ;
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("temperature").innerText = this.responseText;
-    }
-  };
-  xhttp.open("GET", "/temperature", true);
-  xhttp.send();
-}, 5000 );
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var inputChecked;
-      var outputStateM;
-      if( this.responseText == 0){ 
-        inputChecked = true;
-      }
-      else { 
-        inputChecked = false;
-      }
-      document.getElementById("25").checked = inputChecked;
-    }
-  };
-  xhttp.open("GET", "/state?output=25", true);
-  xhttp.send();
-}, 500 ) ;
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var inputChecked;
-      var outputStateM;
-      if( this.responseText == 0){ 
-        inputChecked = true;
-      }
-      else { 
-        inputChecked = false;
-      }
-      document.getElementById("26").checked = inputChecked;
-    }
-  };
-  xhttp.open("GET", "/state?output=26", true);
-  xhttp.send();
-}, 500 ) ;
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      var inputChecked;
-      var outputStateM;
-      if( this.responseText == 0){ 
-        inputChecked = true;
-      }
-      else { 
-        inputChecked = false;
-      }
-      document.getElementById("32").checked = inputChecked;
-    }
-  };
-  xhttp.open("GET", "/state?output=32", true);
-  xhttp.send();
-}, 500 ) ;
+}, 1000 );
+
 </script>
 </head>
 <body>
